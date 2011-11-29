@@ -72,8 +72,8 @@ BOOTSTRAP
        
             export PATH=/usr/local/bin/switcher.d:$PATH (this is example: $switcher_path = /usr/local/bin)
 
-	4. you've finished needed settings. But you must recreate hash of shell when
-	   you change to another version of group. 
+	4. you've finished needed settings. But you must recreate hash of shell after
+	   you change to another version of group with use command.
 			
 			% rehash  (in zsh)
 			% hash -r (in bash)
@@ -87,13 +87,14 @@ BOOTSTRAP
 			You write below setting to .zshrc
 
 			# switcher setting
-            function switcher(){
-                /path/to/switcher $*
-                if [ "$1" = "use" ]; then
-                    echo "rehash shell database"
-                    rehash
-                fi
-            }
+
+			function switcher(){
+				/path/to/switcher $*
+				if [ "$1" = "use" ]; then
+					echo "rehash shell database"
+					rehash
+				fi
+			}
 
 AUTHOR
 	rhysd (https://github.com/rhysd)
