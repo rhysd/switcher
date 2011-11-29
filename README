@@ -1,99 +1,100 @@
 NAME
-	switcher
+    switcher
 
 SYNOPSIS
-	switcher command [options]
+    switcher command [options]
 
 DESCRIPTION
-	This is Ruby script for dealing with multiple version as the same binary name.
-	Like rvm, but you can define group by yourself.
+    This is Ruby script for dealing with multiple version as the same binary name.
+    Like rvm, but you can define group by yourself.
 
 COMMANDS
-	list [group]
-		You can watch the group information. (what version does each group have?)
-		If you specify group, you can watch versions in specific group.
+    list [group]
+        You can watch the group information. (what version does each group have?)
+        If you specify group, you can watch versions in specific group.
 
-	use {group} {version}
-		Switcher sets PATH to {version} of {group}.
-		If you specify system for {version}, switcher use system default setting.
+    use {group} {version}
+        Switcher sets PATH to {version} of {group}.
+        If you specify system for {version}, switcher use system default setting.
 
-	current
-		Switcher show what version of group is currently using.
+    current
+        Switcher show what version of group is currently using.
 
-	reset
-		Switcher sets all versions to system.
+    reset
+        Switcher sets all versions to system.
 
 EXAMPLE
-	example setting:
+    example setting:
 
-		groupname: ruby
-		* version: 1.8.7
-		ruby => /usr/bin/ruby
-		rdoc => /usr/bin/rdoc
-		rake => /usr/bin/rake
-		irb  => /usr/bin/irb
-		ri   => /usr/bin/ri
-		gem  => /usr/bin/gem
+        groupname: ruby
+        * version: 1.8.7
+        ruby => /usr/bin/ruby
+        rdoc => /usr/bin/rdoc
+        rake => /usr/bin/rake
+        irb  => /usr/bin/irb
+        ri   => /usr/bin/ri
+        gem  => /usr/bin/gem
 
-		* version: 1.9.3
-		ruby => /usr/local/bin/ruby
-		rdoc => /usr/local/bin/rdoc
-		rake => /usr/local/bin/rake
-		irb  => /usr/local/bin/irb
-		ri   => /usr/local/bin/ri
-		gem  => /usr/local/bin/gem
+        * version: 1.9.3
+        ruby => /usr/local/bin/ruby
+        rdoc => /usr/local/bin/rdoc
+        rake => /usr/local/bin/rake
+        irb  => /usr/local/bin/irb
+        ri   => /usr/local/bin/ri
+        gem  => /usr/local/bin/gem
 
-	example commands:
+    example commands:
 
-		% switcher list
-		=> displays above list
+        % switcher list
+        => displays above list
 
-		% switcher use ruby 1.9.3
-		=> paths of ruby,rdoc,rake,irb,ri,gem set to binary for Ruby 1.9.3.
+        % switcher use ruby 1.9.3
+        => paths of ruby,rdoc,rake,irb,ri,gem set to binary for Ruby 1.9.3.
 
-		% switcher current
-		=> show version. (for example, 1.9.3)
+        % switcher current
+        => show version. (for example, 1.9.3)
 
 BOOTSTRAP
-	You must set and define some information manually.
+    You must set and define some information manually.
 
-	1. put switcher to anywhere in your path.
+    1. put switcher to anywhere in your path.
 
-	2. edit source code of switcher
+    2. edit source code of switcher
 
-		2-1. At first, you define $switcher_path at line 4. (default is /usr/local/bin. and setting for $HOME is commentouted)
+        2-1. At first, you define $switcher_path at line 4. (default is /usr/local/bin. and setting for $HOME is commentouted)
 
-		2-2. Secondly, you define groups and versions of them.
-		     There are gcc group and Ruby group for example.
-			 And snippet of definition of group is commentouted.
+        2-2. Secondly, you define groups and versions of them.
+             There are gcc group and Ruby group for example.
+             And snippet of definition of group is commentouted.
 
-	3. set path of "${switcher_path}/switcher.d" to head of $PATH.
+    3. set path of "${switcher_path}/switcher.d" to head of $PATH.
        write to your .bashrc / .zshrc like below.
        
             export PATH=/usr/local/bin/switcher.d:$PATH (this is example: $switcher_path = /usr/local/bin)
 
-	4. you've finished needed settings. But you must recreate hash of shell after
-	   you change to another version of group with use command.
-			
-			% rehash  (in zsh)
-			% hash -r (in bash)
+    4. you've finished needed settings. But you must recreate hash of shell after
+       you change to another version of group with use command.
+            
+            % rehash  (in zsh)
+            % hash -r (in bash)
 
-	   If you recreate hash automatically, set below.
+       If you recreate hash automatically, set below.
 
-		4-1. for bash
-			You use switcher.sh instead of switcher.
+        4-1. for bash
+            You use switcher.sh instead of switcher.
 
-		4-2. for zsh
-			You write below setting to .zshrc
+        4-2. for zsh
+            You write below setting to .zshrc
 
-			# switcher setting
-			function switcher(){
-				/path/to/switcher $*
-				if [ "$1" = "use" ]; then
-					echo "rehash shell database"
-					rehash
-				fi
-			}
+            # switcher setting
+            function switcher(){
+                /path/to/switcher $*
+                if [ "$1" = "use" ]; then
+                    echo "rehash shell database"
+                    rehash
+                fi
+            }
 
 AUTHOR
-	rhysd (https://github.com/rhysd)
+    rhysd (https://github.com/rhysd)
+
