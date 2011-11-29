@@ -67,7 +67,7 @@ BOOTSTRAP
 		     There are gcc group and Ruby group for example.
 			 And snippet of definition of group is commentouted.
 
-    3. set path of "${switcher_path}/switcher.d" to head of $PATH.
+	3. set path of "${switcher_path}/switcher.d" to head of $PATH.
        write to your .bashrc / .zshrc like below.
        
             export PATH=/usr/local/bin/switcher.d:$PATH (this is example: $switcher_path = /usr/local/bin)
@@ -87,7 +87,6 @@ BOOTSTRAP
 			You write below setting to .zshrc
 
 			# switcher setting
-
 			function switcher(){
 				/path/to/switcher $*
 				if [ "$1" = "use" ]; then
