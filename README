@@ -72,7 +72,7 @@ BOOTSTRAP
        
             export PATH=/usr/local/bin/switcher.d:$PATH (this is example: $switcher_path = /usr/local/bin)
 
-	3. you've finished needed settings. But you must recreate hash of shell when
+	4. you've finished needed settings. But you must recreate hash of shell when
 	   you change to another version of group. 
 			
 			% rehash  (in zsh)
@@ -80,10 +80,10 @@ BOOTSTRAP
 
 	   If you recreate hash automatically, set below.
 
-		3-1. for bash
+		4-1. for bash
 			You use switcher.sh instead of switcher.
 
-		3-2. for zsh
+		4-2. for zsh
 			You write below setting to .zshrc
 
 			# switcher setting
