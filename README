@@ -48,10 +48,10 @@ EXAMPLE
 		% switcher list
 		=> displays above list
 
-		%switcher use ruby 1.9.3
+		% switcher use ruby 1.9.3
 		=> paths of ruby,rdoc,rake,irb,ri,gem set to binary for Ruby 1.9.3.
 
-		"switcher current"
+		% switcher current
 		=> show version. (for example, 1.9.3)
 
 BOOTSTRAP
