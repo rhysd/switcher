@@ -1,0 +1,129 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+
+$switcher_path = "/usr/local/bin"
+# $switcher_path = File.expand_path "~/.switcher"
+
+class Version
+    def initialize v,p,i
+        @ver = v
+        @path = p
+        @items = i
+    end
+
+    def dump
+        puts "* version: #{@ver}"
+        @items.each do |i|
+            puts "\t#{i} => #{@path}#{i}"
+        end
+        puts
+    end
+
+    attr_accessor :ver, :path,:items
+end
+
+class ProgGroup
+    def initialize n,v
+        @name = n
+        @versions = v
+    end
+
+    def dump
+        puts "groupname: #{@name}\n"
+        @versions.each{ |v| v.dump }
+    end
+
+    attr_accessor :name, :versions
+end
+
+$group_array = []
+
+def make_groups
+
+    # $group_array << ProgGroup.new("", [ Version.new("", "", %w[]), Version.new("", "", %w[]) ] )
+
+    $group_array << ProgGroup.new("gcc", [ Version.new("4.6.2", "/usr/local/bin/", %w[gcc g++ gcov c++ cpp x86_64-apple-darwin11.2.0-c++ x86_64-apple-darwin11.2.0-g++ x86_64-apple-darwin11.2.0-gcc]) ] )
+    $group_array << ProgGroup.new("ruby", [ Version.new("1.8.7", "/usr/bin/", %w[ruby rdoc rake irb ri gem]),
+                                            Version.new("1.9.3", "/usr/local/bin/", %w[ruby rdoc rake irb ri gem]) ]
+                                 )
+end
+
+def use group,version
+
+    if File.exist? "#{$switcher_path}/switcher.d/#{group}-#{version}" then
+        puts "you already set #{version} for #{group}"
+        return
+    end
+
+    target_group   = $group_array.each { |g| break g if g.name == group }
+
+    target_group.versions.each do |v|
+        if File.exist? "#{$switcher_path}/switcher.d/#{target_group.name}-#{v.ver}" then
+            File.delete "#{$switcher_path}/switcher.d/#{target_group.name}-#{v.ver}"
+            v.items.each { |item| File.delete "#{$switcher_path}/switcher.d/#{item}" }
+        end
+    end
+
+    return if version == "system"
+
+    target_version = target_group.versions.each { |v| break v if v.ver == version }
+
+    File.open("#{$switcher_path}/switcher.d/#{target_group.name}-#{target_version.ver}", "w").close
+    target_version.items.each do |item|
+        File.symlink(target_version.path+item, "#{$switcher_path}/switcher.d/#{item}")
+    end
+
+end
+
+def version_detail group
+    $group_array.each{ |g| break g if g.name == group }.versions.each{ |v| v.dump }
+end
+
+def initialize_all
+    Dir.open("#{$switcher_path}/switcher.d").each {|f| File.delete f }
+end
+
+def current_versions
+    $group_array.each do |group|
+        v = group.versions.each do |ver|
+            if File.exist? "#{$switcher_path}/switcher.d/#{group.name}-#{ver.ver}" then
+                puts "#{group.name} => #{ver.ver}"
+                break nil
+            end
+        end
+        puts "#{group.name} => system" if v != nil
+    end
+end
+
+def help
+    puts <<-'EOF'
+Usage:
+    switcher list [name]      : show list of available version (for name if set name)
+    switcher use name version : set version for name
+    switcher current          : show list of version using currently
+    switcher reset            : initialize switcher directory
+
+Note:
+    if set "system" for version, use default system setting
+    EOF
+end
+
+#
+# main
+#
+if __FILE__ == $0 then
+
+    Dir.mkdir "#{$switcher_path}/switcher.d" unless File.exist?("#{$switcher_path}/switcher.d")
+
+    make_groups
+
+    case
+    when ARGV[0]=="use"     && ARGV.size==3 then use ARGV[1],ARGV[2]
+    when ARGV[0]=="list"    && ARGV.size==1 then $group_array.each {|g| g.dump; puts }
+    when ARGV[0]=="list"    && ARGV.size==2 then version_detail ARGV[1]
+    when ARGV[0]=="reset"   && ARGV.size==1 then initialize_all
+    when ARGV[0]=="current" && ARGV.size==1 then current_versions
+    else                                         help
+    end
+
+end
