@@ -42,7 +42,7 @@ $group_array = []
 
 def make_groups
 
-    # $group_array << ProgGroup.new("", [ Version.new("", "", %w[]), Version.new("", "", %w[]) ] )
+    # $group_array << ProgGroup.new("{binary_name}", [ Version.new("{prefix}", "{suffix}", %w[]), Version.new("", "", %w[]) ] )
 
     $group_array << ProgGroup.new("gcc", [ Version.new("4.6.2", "/usr/local/bin/", "", "-4.6.2", %w[gcc g++ gcov c++ cpp x86_64-apple-darwin11.2.0-c++ x86_64-apple-darwin11.2.0-g++ x86_64-apple-darwin11.2.0-gcc]) ] )
     $group_array << ProgGroup.new("ruby", [ Version.new("1.8.7", "/usr/bin/", "", "", %w[ruby rdoc rake irb ri gem]),
